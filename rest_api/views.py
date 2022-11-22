@@ -20,7 +20,7 @@ def create_user(request):
 @csrf_exempt
 def check_login(request, email):
     try:
-        user = User.objects.filter(email=email)
+        user = User.objects.filter(email=request.data.get('email'))
     except:
         return HttpResponse(status=404)
 
