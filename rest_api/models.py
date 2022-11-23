@@ -53,7 +53,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         print('str', dt.timestamp())
         token = jwt.encode({
             'id': self.pk,
-            'exp': dt.timestamp()
+            'username' : self.username,
+            'email' : self.email,
+            'name' : self.name,
+            'surname': self.surname,
+            'exp': dt.utcfromtimestamp(dt.timestamp())
         }, settings.SECRET_KEY, algorithm='HS256')
 
         return token
