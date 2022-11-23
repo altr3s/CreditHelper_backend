@@ -22,53 +22,31 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from braces.views import CsrfExemptMixin
 
 
-@api_view(['POST'])
-def create_user(request):
-    if request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = UserSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-    return JsonResponse({"text":'not post'})
-
-
-def health(request):
-    return JsonResponse({'text':'hello world, mazafaka'})
-
-
-def check_login(request, email):
-    try:
-        user = User.objects.filter(email=request.data.get('email'))
-    except:
-        return HttpResponse(status=404)
-
-    if request.method == 'GET':
-        serializer = UserSerializer(user, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-
-
-def get_user(request, id):
-    try:
-        user = User.objects.get(pk=id)
-    except:
-        return HttpResponse(status=404)
-
-    if request.method == 'GET':
-        serializer = UserSerializer(user)
-        return JsonResponse(serializer.data)
-
-
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
 
 class RegisterView(generics.CreateAPIView, CsrfExemptMixin):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
     authentication_classes = []
+
+
+class LoginAPIView(generics.CreateAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = LoginSerializer
+
+    def post(self, request):
+        user = request.data
+
+        # Обратите внимание, что мы не вызываем метод save() сериализатора, как
+        # делали это для регистрации. Дело в том, что в данном случае нам
+        # нечего сохранять. Вместо этого, метод validate() делает все нужное.
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
