@@ -41,29 +41,20 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length=255)
-    username = serializers.CharField(max_length=255, read_only=True)
-    password = serializers.CharField(max_length=128, write_only=True)
-    token = serializers.CharField(max_length=255, read_only=True)
+    username = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True)
+    access = serializers.CharField(max_length=255, read_only=True)
 
     def validate(self, data):
-        username = data.get('email', None)
+        username = data.get('username', None)
         password = data.get('password', None)
-        user = authenticate(username=username, password=password)
+        user = User.objects.filter(username=username).first()
         if user is None:
-            raise serializers.ValidationError(
-                'A user with this email and password was not found.'
-            )
-
+            raise serializers.ValidationError('Пользователь не найден')
+        if not user.check_password(password):
+            raise serializers.ValidationError('Неверный пароль')
         if not user.is_active:
-            raise serializers.ValidationError(
-                'This user has been deactivated.'
-            )
-
+            raise serializers.ValidationError('Пользователь деактевирован')
         return {
-            'name': user.name,
-            'surname': user.surname,
-            'email': user.email,
-            'username': user.username,
-            'token': user.token
+            'access': user.token
         }

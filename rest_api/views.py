@@ -39,14 +39,11 @@ class LoginAPIView(generics.CreateAPIView):
 
     def post(self, request):
         user = request.data
-
-        # Обратите внимание, что мы не вызываем метод save() сериализатора, как
-        # делали это для регистрации. Дело в том, что в данном случае нам
-        # нечего сохранять. Вместо этого, метод validate() делает все нужное.
         serializer = self.serializer_class(data=user)
-        serializer.is_valid(raise_exception=True)
-
-        return Response(serializer.data, status=200)
+        if serializer.is_valid():
+            return Response(serializer.data, status=200)
+        else:
+            return Response(serializer.data, status=403)
 
 
 @api_view(['GET'])
