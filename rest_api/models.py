@@ -2,6 +2,7 @@ import jwt
 
 from datetime import datetime, timedelta
 
+from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
@@ -59,3 +60,12 @@ class User(AbstractBaseUser, PermissionsMixin):
             'exp': dt.utcfromtimestamp(dt.timestamp())
         }, settings.SECRET_KEY, algorithm='HS256')
         return token
+
+class Credit(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    value = models.IntegerField()
+    rate = models.FloatField()
+    years_count = models.IntegerField()
+    monthly_payment = models.FloatField()
+    total_payment = models.FloatField()
+    overpay = models.FloatField()

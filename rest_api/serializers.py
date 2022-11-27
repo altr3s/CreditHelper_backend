@@ -22,7 +22,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'password', 'name', 'surname']
 
-
+class CreditSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Credit
+        fields = ['id', 'user', 'value', 'rate', 'years_count', 'monthly_payment', 'total_payment', 'overpay']
+        
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
