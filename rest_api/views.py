@@ -18,6 +18,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
 
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
 
 from braces.views import CsrfExemptMixin
 
@@ -32,6 +33,31 @@ class RegisterView(generics.CreateAPIView, CsrfExemptMixin):
     serializer_class = RegisterSerializer
     authentication_classes = []
 
+
+class AddCreditView(generics.CreateAPIView):
+    serializer_class = CreditSerializer
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        token = request.headers.get('Authorization').split()[1]
+        decoded = jwt.decode(token, options={"verify_signature": False})
+        serializer = self.serializer_class(data=request.data)
+        content = {
+            'user_id': decoded['id'],
+            'auth': request.get('auth'),
+            'value': request.get('value'),
+            'rate': request.get('rate'),
+            'years_count': request.get('years_count'),
+            'monthly_payment': request.get('monthly_payment'),
+            'total_payment': request.get('total_payment'),
+            'overpay': request.get('overpay'),
+        }
+        if serializer.is_valid():
+            return Response(content, status=200)
+        else:
+            return Response(content, status=403)
+        
 
 class LoginAPIView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
@@ -51,6 +77,7 @@ def getRoutes(request):
     routes = [
         '/api/token/',
         '/api/register/',
-        '/api/token/refresh/'
+        '/api/token/refresh/',
+        '/api/add_credit',
     ]
     return Response(routes)
