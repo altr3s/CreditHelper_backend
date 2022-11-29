@@ -1,31 +1,12 @@
 from .serializers import *
-from django.http import HttpResponse, JsonResponse
-from rest_framework.parsers import JSONParser
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework import generics, filters
+from rest_framework import generics
 from rest_framework.decorators import api_view
 import os
 import dotenv
-
-
-# api/views.py
-
-from django.shortcuts import render
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.http import JsonResponse
 from rest_api.serializers import MyTokenObtainPairSerializer, RegisterSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import generics
-
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.authentication import SessionAuthentication
-
+from rest_framework.permissions import AllowAny
 from braces.views import CsrfExemptMixin
-
-
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
 
 
 class RegisterView(generics.CreateAPIView, CsrfExemptMixin):
@@ -65,6 +46,11 @@ class LoginAPIView(generics.CreateAPIView):
             return Response(serializer.data, status=200)
         else:
             return Response(serializer.data, status=403)
+
+
+@api_view(['GET'])
+def health(request):
+    return Response({'message': 'Backend server is online'})
 
 
 @api_view(['GET'])
