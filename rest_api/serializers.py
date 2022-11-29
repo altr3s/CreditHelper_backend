@@ -22,10 +22,12 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+
 class CreditSerializer(serializers.ModelSerializer):
     class Meta:
         model = Credit
-        fields = ['id', 'value', 'rate', 'years_count', 'monthly_payment', 'total_payment', 'overpay']
+        fields = '__all__'
+
         
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:

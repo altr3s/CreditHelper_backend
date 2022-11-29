@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics, filters
 from rest_framework.decorators import api_view
 import os
+import dotenv
 
 
 # api/views.py
@@ -36,27 +37,21 @@ class RegisterView(generics.CreateAPIView, CsrfExemptMixin):
 
 class AddCreditView(generics.CreateAPIView):
     serializer_class = CreditSerializer
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
+    authentication_classes = []
+    permission_classes = (AllowAny,)
 
     def post(self, request):
+        data = request.data
         token = request.headers.get('Authorization').split()[1]
-        decoded = jwt.decode(token, options={"verify_signature": False})
-        serializer = self.serializer_class(data=request.data)
-        content = {
-            'user_id': decoded['id'],
-            'auth': request.get('auth'),
-            'value': request.get('value'),
-            'rate': request.get('rate'),
-            'years_count': request.get('years_count'),
-            'monthly_payment': request.get('monthly_payment'),
-            'total_payment': request.get('total_payment'),
-            'overpay': request.get('overpay'),
-        }
+        dotenv.load_dotenv()
+        decoded = jwt.decode(token, options={"verify_signature": True}, key=os.getenv('SECRET_KEY'), algorithms=[os.getenv('ALGORITHMS')])
+        data.update({'user': decoded['id']})
+        serializer = self.serializer_class(data=data)
         if serializer.is_valid():
-            return Response(content, status=200)
+            serializer.save()
+            return Response(serializer.data, status=200)
         else:
-            return Response(content, status=403)
+            return Response(serializer.data, status=403)
         
 
 class LoginAPIView(generics.CreateAPIView):
