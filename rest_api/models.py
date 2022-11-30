@@ -1,4 +1,4 @@
-import jwt
+from jwt.api_jwt import encode
 from datetime import datetime, timedelta
 
 from django.db import models
@@ -50,7 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def _generate_jwt_token(self):
         dt = datetime.now() + timedelta(days=1)
-        token = jwt.encode({
+        token = encode({
             'id': self.pk,
             'username': self.username,
             'email': self.email,
