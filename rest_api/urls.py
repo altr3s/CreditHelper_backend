@@ -10,5 +10,6 @@ urlpatterns = [
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('register', views.RegisterView.as_view(), name='auth_register'),
     path('add_credit', views.AddCreditView.as_view(), name='add_credit'),
-    path('health', views.health, name='health')
+    path('health', views.health, name='health'),
+    path('my_credits', views.GetCreditView.as_view(), name='my_credits')
 ]

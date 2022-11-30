@@ -28,7 +28,10 @@ class CreditSerializer(serializers.ModelSerializer):
         model = Credit
         fields = '__all__'
 
-        
+    def validate(self, attrs):
+        return attrs
+
+   
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

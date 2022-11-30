@@ -1,13 +1,14 @@
 from .serializers import *
 from rest_framework import generics
 from rest_framework.decorators import api_view
-import os
+from os import getenv
 import dotenv
 from rest_framework.response import Response
 from rest_api.serializers import MyTokenObtainPairSerializer, RegisterSerializer
 from rest_framework.permissions import AllowAny
 from braces.views import CsrfExemptMixin
-
+from jwt.api_jwt import decode
+from collections import namedtuple
 
 class RegisterView(generics.CreateAPIView, CsrfExemptMixin):
     queryset = User.objects.all()
@@ -25,7 +26,7 @@ class AddCreditView(generics.CreateAPIView):
         data = request.data
         token = request.headers.get('Authorization').split()[1]
         dotenv.load_dotenv()
-        decoded = jwt.decode(token, options={"verify_signature": True}, key=os.getenv('SECRET_KEY'), algorithms=[os.getenv('ALGORITHMS')])
+        decoded = decode(token, options={"verify_signature": True}, key=getenv('SECRET_KEY'), algorithms=[getenv('ALGORITHMS')])
         data.update({'user': decoded['id']})
         serializer = self.serializer_class(data=data)
         if serializer.is_valid():
@@ -34,6 +35,18 @@ class AddCreditView(generics.CreateAPIView):
         else:
             return Response(serializer.data, status=403)
         
+
+class GetCreditView(generics.CreateAPIView):
+
+    def get(self, request):
+        token = request.headers.get('Authorization').split()[1]
+        dotenv.load_dotenv()
+        decoded = decode(token, options={"verify_signature": True}, key=getenv('SECRET_KEY'), algorithms=[getenv('ALGORITHMS')])
+        user_id = decoded['id']
+        query = Credit.objects.filter(user=user_id)
+        serializer = CreditSerializer(query, many=True)
+        return Response(serializer.data)
+
 
 class LoginAPIView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
@@ -60,5 +73,6 @@ def getRoutes(request):
         '/api/register/',
         '/api/token/refresh/',
         '/api/add_credit',
+        '/api/my_credits'
     ]
     return Response(routes)
