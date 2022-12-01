@@ -79,13 +79,7 @@ class DeleteCreditFromDB(generics.CreateAPIView):
     def post(self, request):
         data = request.data
         Credit.objects.filter(id=request.data['id']).delete()
-        serializer = CreditSerializer(data=data)
-        print(serializer.is_valid())
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=200)
-        else:
-            return Response(serializer.data, status=403)
+        return Response({'Massage': 'success'})
 
 
 class LoginAPIView(generics.CreateAPIView):
