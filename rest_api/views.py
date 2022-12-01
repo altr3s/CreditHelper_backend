@@ -8,12 +8,9 @@ from rest_api.serializers import MyTokenObtainPairSerializer, RegisterSerializer
 from rest_framework.permissions import AllowAny
 from braces.views import CsrfExemptMixin
 from jwt.api_jwt import decode
-from collections import namedtuple
 import pandas as pd
-from datetime import datetime
-from wsgiref.util import FileWrapper
 from django.http import HttpResponse
-
+import mimetypes
 
 class RegisterView(generics.CreateAPIView, CsrfExemptMixin):
     queryset = User.objects.all()
@@ -64,7 +61,6 @@ class DownloadExcelView(generics.CreateAPIView):
         array = CreditSerializer(query, many=True).data
         data = []
         columns = ['Сумма кредита', 'Ставка', 'Количество лет', 'Ежмес платеж', 'Общая сумма', 'Переплата']   
-        now = datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
         for credit in array:
             data.append([credit['value'], credit['rate'], credit['years_count'], credit['monthly_payment'], credit['total_payment'], credit['overpay']])
         df = pd.DataFrame(data=data, columns=columns)
@@ -72,11 +68,25 @@ class DownloadExcelView(generics.CreateAPIView):
         df.to_excel(excel_writer=f"downloads/{decoded['username']}_credits.xlsx", sheet_name='Кредиты')
         file_name = f"downloads/{decoded['username']}_credits.xlsx"
         file = open(file_name, 'rb')
-        response = HttpResponse(FileWrapper(file), content_type='application/xlsx')
-        response['Content-Disposition'] = f'attachment; filename={file_name}'
+        mime_type, _ = mimetypes.guess_type(file_name)
+        response = HttpResponse(file, content_type=mime_type)
+        response['Content-Disposition'] = "attachment; filename=%s" % file_name
         return response
-
         
+
+class DeleteCreditFromDB(generics.CreateAPIView):
+    
+    def post(self, request):
+        data = request.data
+        Credit.objects.filter(id=request.data['id']).delete()
+        serializer = CreditSerializer(data=data)
+        print(serializer.is_valid())
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=200)
+        else:
+            return Response(serializer.data, status=403)
+
 
 class LoginAPIView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
@@ -102,8 +112,9 @@ def getRoutes(request):
         '/api/token/',
         '/api/register/',
         '/api/token/refresh/',
-        '/api/add_credit',
+        '/api/add_credit/',
         '/api/my_credits',
-        '/api/download'
+        '/api/download',
+        '/api/delete_credit'
     ]
     return Response(routes)
