@@ -57,9 +57,14 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, data):
         username = data.get('username', None)
         password = data.get('password', None)
-        user = User.objects.filter(username=username).first()
-        if user is None:
+        user_by_login = User.objects.filter(username=username).first()
+        user_by_email = User.objects.filter(email=username).first()
+        if user_by_email is None and user_by_login is None:
             raise serializers.ValidationError('Пользователь не найден')
+        if user_by_login is not None:
+            user = user_by_login
+        if user_by_email is not None:
+            user = user_by_email
         if not user.check_password(password):
             raise serializers.ValidationError('Неверный пароль')
         if not user.is_active:
