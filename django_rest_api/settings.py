@@ -18,8 +18,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'http://localhost:3000',
-    '127.0.0.1'
+    'https://credithelper.onrender.com',
+    'https://credithelper_backend.onrender.com'
 ]
 
 AUTH_USER_MODEL = 'rest_api.User'
@@ -128,19 +128,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8400',
-    'http://localhost:3000',
-    'http://localhost:8000'
+    'https://credithelper.onrender.com'
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:8400',
-    'http://localhost:3000',
-    'http://localhost:8000'
+    'https://credithelper.onrender.com'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000'
+    'https://credithelper.onrender.com'
 ]
 
 
