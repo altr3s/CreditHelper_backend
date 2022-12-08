@@ -1,22 +1,20 @@
 from .serializers import *
+
 from rest_framework import generics
 from rest_framework.decorators import api_view
-from os import getenv
-import dotenv
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_api.serializers import MyTokenObtainPairSerializer, RegisterSerializer
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+
+from rest_api.serializers import RegisterSerializer
+
+from os import getenv
+
+import dotenv
+
 from braces.views import CsrfExemptMixin
+
 from jwt.api_jwt import decode
-import pandas as pd
-from django.http import HttpResponse
-import mimetypes
-from io import BytesIO
-# from fastapi.responses import FileResponse
-import xlwt
-from excel_response import ExcelResponse, ExcelView
-from datetime import datetime
+
 
 class RegisterView(generics.CreateAPIView, CsrfExemptMixin):
     queryset = User.objects.all()
@@ -56,7 +54,6 @@ class GetCreditView(generics.CreateAPIView):
         return Response(serializer.data)
 
         
-
 class DeleteCreditFromDB(generics.CreateAPIView):
     
     def post(self, request):

@@ -1,8 +1,7 @@
-from rest_framework import serializers
 from .models import *
+
+from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from passlib.context import CryptContext
-from django.contrib.auth import authenticate
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

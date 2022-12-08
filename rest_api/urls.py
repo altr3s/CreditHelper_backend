@@ -1,8 +1,7 @@
-from django.urls import path
 from . import views
-from rest_framework_simplejwt.views import (
-    TokenRefreshView,
-)
+
+from django.urls import path
+from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
     path('', views.getRoutes, name='routes'),

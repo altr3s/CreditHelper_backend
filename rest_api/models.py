@@ -1,4 +1,5 @@
 from jwt.api_jwt import encode
+
 from datetime import datetime, timedelta
 
 from django.db import models
