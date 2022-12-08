@@ -12,6 +12,5 @@ urlpatterns = [
     path('add_credit', views.AddCreditView.as_view(), name='add_credit'),
     path('health', views.health, name='health'),
     path('my_credits', views.GetCreditView.as_view(), name='my_credits'),
-    path('download', views.ExcelView.as_view(), name='download'),
     path('delete_credit', views.DeleteCreditFromDB.as_view(), name='delete'),
 ]
