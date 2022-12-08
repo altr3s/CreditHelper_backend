@@ -19,7 +19,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'https://credithelper.onrender.com',
-    'https://credithelper-backend.onrender.com'
+    'https://credithelper-backend.onrender.com',
+    'credithelper-backend.onrender.com',
+    'credithelper.onrender.com'
 ]
 
 AUTH_USER_MODEL = 'rest_api.User'
