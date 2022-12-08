@@ -19,9 +19,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'https://credithelper.onrender.com',
+    'credithelper.onrender.com',
+    'https://creditshelper.ru'
+    'creditshelper.ru',
     'https://credithelper-backend.onrender.com',
-    'credithelper-backend.onrender.com',
-    'credithelper.onrender.com'
+    'credithelper-backend.onrender.com'
+    
 ]
 
 AUTH_USER_MODEL = 'rest_api.User'
@@ -130,15 +133,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ALLOWED_ORIGINS = [
-    'https://credithelper.onrender.com'
+    'https://credithelper.onrender.com',
+    'credithelper.onrender.com',
+    'https://creditshelper.ru'
+    'creditshelper.ru',
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    'https://credithelper.onrender.com'
+    'https://credithelper.onrender.com',
+    'credithelper.onrender.com',
+    'https://creditshelper.ru'
+    'creditshelper.ru',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://credithelper.onrender.com'
+    'https://credithelper.onrender.com',
+    'credithelper.onrender.com',
+    'https://creditshelper.ru'
+    'creditshelper.ru',
 ]
 
 
