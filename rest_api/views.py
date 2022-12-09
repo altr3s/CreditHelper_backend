@@ -88,8 +88,8 @@ class ExcelView(generics.CreateAPIView):
         array = CreditSerializer(query, many=True).data
         data = []
         columns = {
-            'ru': ['Сумма кредита', 'Ставка', 'Количество лет', 'Ежемесячный платеж', 'Общая сумма выплат', 'Переплата по кредиту'] , 
-            'en': ['Credit sum', 'Credit rate', 'Years', 'Monthly payment', 'Total payment', 'Overpay']
+            'ru': ['Сумма кредита, руб.', 'Ставка, %', 'Количество лет', 'Ежемесячный платеж, руб', 'Общая сумма выплат, руб', 'Переплата по кредиту, руб'] , 
+            'en': ['Credit sum, rub', 'Credit rate, %', 'Years', 'Monthly payment, rub', 'Total payment, rub', 'Overpay, rub']
         } 
         for credit in array:
             data.append([credit['value'], credit['rate'], credit['years_count'], credit['monthly_payment'], credit['total_payment'], credit['overpay']])
