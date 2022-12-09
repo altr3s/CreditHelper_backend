@@ -16,18 +16,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'https://credithelper.onrender.com',
-    'credithelper.onrender.com',
-    'https://creditshelper.ru'
-    'creditshelper.ru',
-    'https://credithelper-backend.onrender.com',
-    'credithelper-backend.onrender.com',
-    '127.0.0.1',
-    'https://0.0.0.0',
-    'https://0.0.0.0:10000'
-    
-]
+ALLOWED_HOSTS = ["*"]
 
 AUTH_USER_MODEL = 'rest_api.User'
 # Application definition
@@ -137,28 +126,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ALLOWED_ORIGINS = [
-    'https://credithelper.onrender.com',
-    'https://creditshelper.ru',
-    'https://0.0.0.0',
-    'https://0.0.0.0:10000'
-]
+CORS_ALLOWED_ORIGINS = ["*"]
 
-CORS_ORIGIN_WHITELIST = [
-    'https://credithelper.onrender.com',
-    'https://creditshelper.ru',
-    'https://0.0.0.0',
-    'https://0.0.0.0:10000'
-]
+CORS_ORIGIN_WHITELIST = ["*"]
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://credithelper.onrender.com',
-    'credithelper.onrender.com',
-    'https://creditshelper.ru'
-    'creditshelper.ru',
-    'https://0.0.0.0',
-    'https://0.0.0.0:10000'
-]
+CSRF_TRUSTED_ORIGINS = ["*"]
 
 
 REST_FRAMEWORK = {
