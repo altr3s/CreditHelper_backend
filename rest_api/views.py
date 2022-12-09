@@ -96,7 +96,7 @@ class ExcelView(generics.CreateAPIView):
         df = pd.DataFrame(data=data, columns=columns[request.GET.get('locale')])
         df.index += 1
         filename = f"{decoded['username']}_{datetime.now().strftime('%d-%m-%Y')}_credits.xlsx"
-        df.to_excel(excel_writer=f'downloads/{filename}', sheet_name='Кредиты') 
+        df.to_excel(excel_writer=f'./downloads/{filename}', sheet_name='Кредиты') 
         with open(f'./downloads/{filename}', 'rb') as file:
             data = file.read()
         response = HttpResponse(data, headers={
