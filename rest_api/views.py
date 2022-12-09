@@ -4,7 +4,9 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-
+import pandas as pd
+from django.http import HttpResponse
+from datetime import datetime
 from rest_api.serializers import RegisterSerializer
 
 from os import getenv
@@ -75,6 +77,34 @@ class LoginAPIView(generics.CreateAPIView):
             return Response(serializer.data, status=403)
 
 
+class ExcelView(generics.CreateAPIView):
+
+    def get(self, request):
+        token = request.headers.get('Authorization').split()[1]
+        dotenv.load_dotenv()
+        decoded = decode(token, options={"verify_signature": True}, key=getenv('SECRET_KEY'), algorithms=[getenv('ALGORITHMS')])
+        user_id = decoded['id']
+        query = Credit.objects.filter(user=user_id)
+        array = CreditSerializer(query, many=True).data
+        data = []
+        columns = {
+            'ru': ['Сумма кредита', 'Ставка', 'Количество лет', 'Ежемесячный платеж', 'Общая сумма выплат', 'Переплата по кредиту'] , 
+            'en': ['Credit sum', 'Credit rate', 'Years', 'Monthly payment', 'Total payment', 'Overpay']
+        } 
+        for credit in array:
+            data.append([credit['value'], credit['rate'], credit['years_count'], credit['monthly_payment'], credit['total_payment'], credit['overpay']])
+        df = pd.DataFrame(data=data, columns=columns[request.GET.get('locale')])
+        df.index += 1
+        filename = f"{decoded['username']}_{datetime.now().strftime('%d-%m-%Y')}_credits.xlsx"
+        df.to_excel(excel_writer=f'downloads/{filename}', sheet_name='Кредиты') 
+        with open(f'./downloads/{filename}', 'rb') as file:
+            data = file.read()
+        response = HttpResponse(data, headers={
+            'Content-Type': 'application/vnd.ms-excel',
+            'Content-Disposition': f'attachment; filename="{filename}',
+        })
+        return response
+
 @api_view(['GET'])
 def health(request):
     return Response({'message': 'Backend server is online'})
@@ -88,6 +118,7 @@ def getRoutes(request):
         '/api/token/refresh/',
         '/api/add_credit/',
         '/api/my_credits',
-        '/api/delete_credit'
+        '/api/delete_credit',
+        '/api/download'
     ]
     return Response(routes)
