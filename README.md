@@ -14,11 +14,11 @@
 ---
 ## Links:
 - Timur Ramazanov: [ramz1t]
-- More info about frontend you can take by click: [Frontend]
-- You can test full version by click: [creditshelper.ru][CH_link] 
+- More info about frontend you can take with a click: [Frontend]
+- You can test full version with a click: [creditshelper.ru][CH_link] 
 ---
 For any questions you can write to Telegram: @altr3s
-Thanks for watching! Also you can see our other projects by follow to profiles < 3
+Thanks for watching! Also you can see our other projects by following into profile < 3
 
 [CH_link]:<https://creditshelper.ru>
 [frontend]:<https://github.com/ramz1t/CreditHelper_frontend>
