@@ -17,7 +17,7 @@
 - More info about frontend you can take with a click: [Frontend]
 - You can test full version with a click: [creditshelper.ru][CH_link] 
 ---
-For any questions you can write to Telegram: @altr3s
+For any questions you can write to Telegram: @altr3s, @ramz1q
 Thanks for watching! Also you can see our other projects by following into profile < 3
 
 [CH_link]:<https://creditshelper.ru>
