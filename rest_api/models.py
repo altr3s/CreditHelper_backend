@@ -58,7 +58,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             'name': self.name,
             'surname': self.surname,
             'exp': dt.utcfromtimestamp(dt.timestamp())
-        }, settings.SECRET_KEY, algorithm='HS256')
+        }, settings.SECRET_KEY, settings.ALGORITHMS)
         return token
 
 class Credit(models.Model):
