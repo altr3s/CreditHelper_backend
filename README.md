@@ -20,6 +20,8 @@
 For any questions you can write to Telegram: @altr3s, @ramz1q
 Thanks for watching! Also you can see our other projects by following into profile < 3
 
+v 1.0.0
+
 [CH_link]:<https://creditshelper.ru>
 [frontend]:<https://github.com/ramz1t/CreditHelper_frontend>
 [ramz1t]:<https://github.com/ramz1t>
